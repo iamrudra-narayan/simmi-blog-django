@@ -3,21 +3,23 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import login,authenticate
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
+from .forms import RegistrationForm
 from django.contrib import messages
-from .models import User
+from .models import User, Post
 
 # Create your views here.
 
 def home(request):
-    return render(request, "index.html")
+    posts = Post.objects.all()
+    return render(request, "index.html",{'posts':posts})
 
 def register(request):
 	if request.method == "POST":
-		form = UserCreationForm(request.POST)
+		form = RegistrationForm(request.POST)
 		if form.is_valid():
 			form.save()
-			return redirect('/login/')
-	form = UserCreationForm()    		
+			return redirect('/login/') 
+	form = RegistrationForm()    		
 	return render (request, "register.html", {"form":form})
     
 def login(request):
@@ -30,7 +32,7 @@ def login(request):
 			if user is not None:
 				login(request, user)
 				messages.info(request, f"You are now logged in as {username}.")
-				return redirect("/home/")
+				return redirect("home/")
 			else:
 				messages.error(request,"Invalid username or password.")
 		else:
