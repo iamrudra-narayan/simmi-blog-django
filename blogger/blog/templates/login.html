@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block title %}Login-Panel{% endblock %}
+{% block content %}
+    <div class="container-contact">
+     <form  action="/login/" method="POST">
+        <div class="form-group">  
+            {% if messages %}
+            <div class ="alert-success">
+                {% for message in messages %}
+                   <li>{{message}}</li>
+                {% endfor %}
+            </div>  
+            {% endif %}    
+            </div>
+        <div class="form-group">
+        <p class="h">LOGIN HERE</p>
+        </div>
+        {% csrf_token %}
+        <div class="form-group">
+            {{form.username.label}} {{form.username}}
+            {% if form.username.errors %}
+        <div class ="alert-danger">
+            {% for error in form.username.errors %}
+               <li>{{error}}</li>
+            {% endfor %}
+        </div>  
+        {% endif %}
+        </div>   
+        <div class="form-group">
+            {{form.password.label}} {{form.password}}
+            {% if form.password.errors %}
+        <div class ="alert-danger">
+            {% for error in form.password.errors %}
+               <li>{{error}}</li>
+            {% endfor %}
+        </div>  
+        {% endif %}
+        </div> 
+       <div class="btn">
+            <button type='submit' class='btn-send'>Submit</button>
+        </div>
+        <div class="reffer">
+            <p class="ac">Don't Have an Account.</p>
+            <a href="/register/"><p style="color:rgb(0, 110, 255);font-size:16px;font-weight:bold;letter-spacing:0.5px;text-decoration:none;list-style:none;">Register Here</p></a>
+        </div>
+</form>
+</div>
+{% endblock %}
